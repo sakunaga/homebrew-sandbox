@@ -1,12 +1,15 @@
 class Sandbox < Formula
-  desc ""
-  homepage ""
-  url "https://github.com/sakunaga/sandbox/releases/download/beta/sandbox"
-  version "0.0.1-beta"
-  sha256 "7b865977bd0de49b37afe0a3b75d160f138e7c483a5365a92462a18f618f1522"
+  homepage "https://github.com/sakunaga/sandbox"
+  url "https://github.com/sakunaga/sandbox/archive/v0.0.1.tar.gz"
+  sha256 "d7c2606aeb491b115903e8a509713d6f6405efc4cfbbcfe7d6dd6e0736c0ecf4"
+  license "MIT"
 
   def install
-    system "./configure", "--disable-silent-rules", *std_configure_args
+    # system "./configure", "--disable-silent-rules", *std_configure_args
     bin.install "sandbox"
+  end
+
+  test do
+    system "true"
   end
 end
