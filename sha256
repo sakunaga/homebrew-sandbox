@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Check if a version argument is provided
+if [ $# -eq 0 ]; then
+    echo "Error: Please provide a version number as an argument."
+    echo "Usage: $0 <version>"
+    exit 1
+fi
+
+# Get the version from the first argument
+version=$1
+
+url="https://github.com/sakunaga/sandbox/archive/v$version.tar.gz"
+
+# Download the file
+echo "Downloading sandbox-$version.tar.gz..."
+curl -OL "$url"
+
+# Check if the download was successful
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to download the file."
+    exit 1
+fi
+
+# Rename the downloaded file
+mv "v$version.tar.gz" "sandbox-$version.tar.gz"
+
+# Calculate SHA256 hash
+echo "Calculating SHA256 hash..."
+hash=$(openssl dgst -sha256 "sandbox-$version.tar.gz" | awk '{print $2}')
+
+# Check if the hash calculation was successful
+if [ $? -ne 0 ]; then
+    echo "Error: Failed to calculate SHA256 hash."
+    rm -f "sandbox-$version.tar.gz"
+    exit 1
+fi
+
+# Remove the downloaded file
+rm -f "sandbox-$version.tar.gz"
+
+# Update sandbox.rb
+echo "Updating sandbox.rb..."
+cat > sandbox.rb << EOL
+class Sandbox < Formula
+  homepage "https://github.com/sakunaga/sandbox"
+  url "https://github.com/sakunaga/sandbox/archive/v$version.tar.gz"
+  sha256 "$hash"
+  license "MIT"
+
+  def install
+    bin.install "sandbox"
+  end
+
+  test do
+    system "true"
+  end
+end
+EOL
+
+echo "sandbox.rb has been updated with version $version and SHA256 $hash"
