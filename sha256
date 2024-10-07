@@ -12,6 +12,9 @@ version=$1
 command=sandbox
 githubID=sakunaga
 
+# Capitalize the first letter of $command
+capitalized_command=$(echo "$command" | tr '[:lower:]' '[:upper:]' | cut -c1)$(echo "$command" | cut -c2-)
+
 url="https://github.com/$githubID/$command/archive/v$version.tar.gz"
 
 # Download the file
@@ -44,7 +47,7 @@ rm -f "$command-$version.tar.gz"
 # Update $command.rb
 echo "Updating $command.rb..."
 cat > $command.rb << EOL
-class $command < Formula
+class $capitalized_command < Formula
   homepage "https://github.com/$githubID/$command"
   url "https://github.com/$githubID/$command/archive/v$version.tar.gz"
   sha256 "$hash"
