@@ -1,7 +1,7 @@
 class sandbox < Formula
   homepage "https://github.com/sakunaga/sandbox"
-  url "https://github.com/sakunaga/sandbox/archive/v0.0.7.tar.gz"
-  sha256 "2ba1f172ecc06c3ebd841b8709166148b1e425c6bb150fcec416f3a0d7ca135a"
+  url "https://github.com/sakunaga/sandbox/archive/v0.0.7.1.tar.gz"
+  sha256 "2b7d2e7a4382bc6b9108649d55c15fe3ff20ec6eb460a8c8108fb1c83916bca9"
   license "MIT"
 
   def install
