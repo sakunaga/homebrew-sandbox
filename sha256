@@ -9,11 +9,13 @@ fi
 
 # Get the version from the first argument
 version=$1
+command=sandbox
+githubID=sakunaga
 
-url="https://github.com/sakunaga/sandbox/archive/v$version.tar.gz"
+url="https://github.com/$githubID/$command/archive/v$version.tar.gz"
 
 # Download the file
-echo "Downloading sandbox-$version.tar.gz..."
+echo "Downloading $command-$version.tar.gz..."
 curl -OL "$url"
 
 # Check if the download was successful
@@ -23,33 +25,33 @@ if [ $? -ne 0 ]; then
 fi
 
 # Rename the downloaded file
-mv "v$version.tar.gz" "sandbox-$version.tar.gz"
+mv "v$version.tar.gz" "$command-$version.tar.gz"
 
 # Calculate SHA256 hash
 echo "Calculating SHA256 hash..."
-hash=$(openssl dgst -sha256 "sandbox-$version.tar.gz" | awk '{print $2}')
+hash=$(openssl dgst -sha256 "$command-$version.tar.gz" | awk '{print $2}')
 
 # Check if the hash calculation was successful
 if [ $? -ne 0 ]; then
     echo "Error: Failed to calculate SHA256 hash."
-    rm -f "sandbox-$version.tar.gz"
+    rm -f "$command-$version.tar.gz"
     exit 1
 fi
 
 # Remove the downloaded file
-rm -f "sandbox-$version.tar.gz"
+rm -f "$command-$version.tar.gz"
 
-# Update sandbox.rb
-echo "Updating sandbox.rb..."
-cat > sandbox.rb << EOL
-class Sandbox < Formula
-  homepage "https://github.com/sakunaga/sandbox"
-  url "https://github.com/sakunaga/sandbox/archive/v$version.tar.gz"
+# Update $command.rb
+echo "Updating $command.rb..."
+cat > $command.rb << EOL
+class $command < Formula
+  homepage "https://github.com/$githubID/$command"
+  url "https://github.com/$githubID/$command/archive/v$version.tar.gz"
   sha256 "$hash"
   license "MIT"
 
   def install
-    bin.install "sandbox"
+    bin.install "$command"
   end
 
   test do
@@ -58,4 +60,4 @@ class Sandbox < Formula
 end
 EOL
 
-echo "sandbox.rb has been updated with version $version and SHA256 $hash"
+echo "$command.rb has been updated with version $version and SHA256 $hash"
